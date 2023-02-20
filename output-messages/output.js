@@ -44,7 +44,7 @@ const pause = () => {
 }
 
 
-module.exports = {
+export {
     showMenu,
     pause,
 }
