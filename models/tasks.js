@@ -63,18 +63,33 @@ class Tasks {
       if ( completed ) {
         if ( completedBy ) {
           counter += 1;
-          console.log(`${ (counter + '.').green } ${ description } ${ completedBy }`);
+          console.log(`${ (counter + '.').green } ${ description } ::  ${ completedBy.green }`);
         }
       } else {
         // Show pending
         if ( !completedBy ) {
           counter += 1;
-          console.log(`${ ( counter + '.' ).red } ${ description } ${ status }`);
+          console.log(`${ ( counter + '.' ).red } ${ description } ::  ${ status }`);
         }
       }
     });
   }
 
+  toggleCompleted( taskIds = [] ) {
+    this.listing.forEach(( task ) => {
+      this._listing[task.id].completedBy = taskIds.includes(task.id)
+      ? new Date().toISOString()
+      : null;
+    });
+
+    // this.listing.forEach( task => {
+    //   if ( !taskIds.includes( task.id ) ) {
+    //     this._listing[task.id].completedBy = null;
+    //     console.log(this._listing[task.id].completedBy);
+    //   }
+
+    // });
+  }
 }
 
 export { Tasks };

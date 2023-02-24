@@ -1,7 +1,9 @@
 import colors from 'colors';
 import { Tasks }  from './models/tasks.js';
 import { readInput } from './output-messages/questions/questions.js';
-import { confirmDelete, inquirerMenu } from './output-messages/inquirer.js';
+import { inquirerMenu } from './output-messages/inquirer.js';
+import { deleteById, confirmDelete } from './output-messages/confirmDelete/confirmDelete.js';
+import { showCheckList } from './output-messages/select-multiple/select-multiple.js';
 import { pause } from './output-messages/pause/pause.js';
 import { saveTask, readTask } from './database/db-tasks.js';
 
@@ -37,12 +39,21 @@ const main = async() => {
             break;
 
             case '5':
-                tasks.listCompletedOrPending( false );
+                const taskIds = await showCheckList( tasks.listing );
+                
+                tasks.toggleCompleted( taskIds );
             break;
 
             case '6':
-                const id = await confirmDelete( tasks.listing );
-                console.log({ id });
+                const id = await deleteById( tasks.listing );
+
+                if ( id !== '0' ) {
+                const confirmDeletion = await confirmDelete('Are you sure you want to delete this task?');
+                    if ( confirmDeletion ) {
+                        tasks.deleteTask( id );
+                        console.log('Task deleted');
+                    }
+                }
             break;
 
             default:

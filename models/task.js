@@ -4,7 +4,7 @@ class Task {
   constructor( description ) {
     this.id = uuid();
     this.description = description;
-    this.completedBy = new Date().getDate();
+    this.completedBy = null;
   }
 }
 
